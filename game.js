@@ -43,7 +43,7 @@ let characters2 = [{
   health: 100,
   hits: 0,
   moveIndex: 0,
-  images: ['assets/wario1.png', 'assets/wario5.png', 'assets/wario4.png'],
+  images: ['assets/wario1.png', 'assets/wario7.png', 'assets/wario4.png'],
   items: []
 }, {
   name: "Bowser",
@@ -116,10 +116,12 @@ function giveItemMushroom2() {
 
 }
 function imgChange(num) {
-  if (characters1[activeCharacters].health == 0) {
+  if (characters1[activeCharacters].health == 0 || characters2[activeCharacters].health == 0) {
     characters1[activeCharacters].moveIndex = 2;
-  } else if (characters1[activeCharacters].health < 100) {
+    characters2[activeCharacters].moveIndex = 2;
+  } else if (characters1[activeCharacters].health < 100 || characters2[activeCharacters].health < 100) {
     characters1[activeCharacters].moveIndex = 1;
+    characters2[activeCharacters].moveIndex = 1;
   }
 }
 // function imgChange2(num) {
@@ -180,15 +182,16 @@ function update() {
   imgChange()
   document.getElementById('health').innerText = characters1[activeCharacters].health.toString()
   document.getElementById('hits').innerText = characters1[activeCharacters].hits.toString()
+  document.getElementById('name1').innerText = characters1[activeCharacters].name.toString()
   document.getElementById('Character1').setAttribute("src", characters1[activeCharacters].images[characters1[activeCharacters].moveIndex])
-  document.getElementById('health').innerText = characters2[activeCharacters].health.toString()
-  document.getElementById('hits').innerText = characters2[activeCharacters].hits.toString()
+  document.getElementById('health1').innerText = characters2[activeCharacters].health.toString()
+  document.getElementById('hits1').innerText = characters2[activeCharacters].hits.toString()
   document.getElementById('Character2').setAttribute("src", characters2[activeCharacters].images[characters2[activeCharacters].moveIndex])
-
+  document.getElementById('name').innerText = characters2[activeCharacters].name.toString()
   // document.getElementById('progressBar2').style.width = characters2[activeCharacters].health
 
 
-  if (characters1[activeCharacters].health == 0) {
+  if (characters1[activeCharacters].health == 0 || characters1[activeCharacters].health == 0) {
     document.getElementById('reset').innerText.disabled = true
 
   } else {
@@ -198,10 +201,11 @@ function update() {
 update()
 function reset() {
   characters1[activeCharacters].health = 100
-  // characters2[activeCharacters].health = 100
+  characters2[activeCharacters].health = 100
   characters1[activeCharacters].hits = 0
   characters1[activeCharacters].moveIndex = 0
-  // characters2[activeCharacters].hits = 0
+  characters2[activeCharacters].hits = 0
+  characters2[activeCharacters].moveIndex = 0
   update()
 }
 
@@ -210,7 +214,7 @@ function resetButtons() {
   let buttons = document.getElementsByClassName('but')
   for (let i = 0; i < buttons.length; i++) {
     let button = buttons[i];
-    if (characters1[activeCharacters].health <= 0) {
+    if (characters1[activeCharacters].health == 0 || characters2[activeCharacters].health == 0) {
       button.setAttribute('disabled', false)
     } else {
       button.removeAttribute('disabled')
@@ -218,26 +222,23 @@ function resetButtons() {
   }
 }
 // document.getElementById('progressBar1').style.width = character.health
-// function drawItemButtons() {
-//   let template = ''
-//   for (let i = 0; i < characters1[activeCharacters].length; i++) {
-//     let character = characters1[i];
-//     template += `
-//         <button class="btn btn-info" onclick="setActiveCat(${i})">${characters1[activeCharacters].names}</button>
-//            `
-//   }
-//   document.getElementById('characters1-buttons').innerHTML = template
-// }
+function drawItemButtons() {
+  let template = ''
+  for (let i = 0; i < characters1[activeCharacters].length; i++) {
+    let character = characters1[i];
+    template += `
+        <button class="btn btn-info" onclick="setActiveCat(${i})">${characters1[activeCharacters].name}</button>
+           `
+  }
+  document.getElementById('characters1-buttons').innerHTML = template
+}
 
-// drawItemButtons()
-// function setActiveCharacters(index) {
-//   activeCharacters = index
-//   update()
-// }
-// function setActiveCharacters(index) {
-//   activeCharacters = index
-//   update()
-// }
+drawItemButtons()
+
+function setActiveCharacters(index) {
+  activeCharacters = index
+  update()
+}
 // function progressBar1() {
 //   if (character.health <= ) {
 //     document.getElementById('progressBar1').style.width = character.health
